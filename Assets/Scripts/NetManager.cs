@@ -20,11 +20,13 @@ public class NetManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster() 
     {
+        print("Connected to master");
         PhotonNetwork.JoinLobby();
     }
 
     public override void OnJoinedLobby()
     {
+        print("Connected to Lobby");
         button.interactable = true;
     }
 
@@ -42,6 +44,10 @@ public class NetManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinOrCreateRoom(inputFieldRoom.text, option, TypedLobby.Default);
         button.interactable = false;
     }
+    public override void OnCreatedRoom()
+    {
+        print("Created Room");
+    }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
@@ -50,6 +56,7 @@ public class NetManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        print("Joined Room");
         PhotonNetwork.LoadLevel("Western");
     }
 
