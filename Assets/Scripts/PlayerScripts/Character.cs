@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Character : MonoBehaviour
+public class Character : MonoBehaviourPun
 {
     [SerializeField] private float speed;
     private Rigidbody _rb;
