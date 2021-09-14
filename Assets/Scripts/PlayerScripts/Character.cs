@@ -19,4 +19,8 @@ public class Character : MonoBehaviour
         dir.y = _rb.velocity.y;
         _rb.velocity = dir;
     }
+    public void AimTo(Vector3 mdir) 
+    {
+        transform.forward = mdir - transform.position;
+    }
 }

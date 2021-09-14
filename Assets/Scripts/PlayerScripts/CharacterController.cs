@@ -19,5 +19,13 @@ public class CharacterController : MonoBehaviourPun
         var v = Input.GetAxis("Vertical");
         Vector3 dir = new Vector3(h, 0, v);
         if (v != 0 || h != 0) _character.Move(dir);
+        Plane playerPlane = new Plane(Vector3.up, transform.position);
+        Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
+        float hitdist = 0.0f;
+        if (playerPlane.Raycast(ray, out hitdist)) 
+        {
+            Vector3 mdir = ray.GetPoint(hitdist);
+            _character.AimTo(mdir);
+        }
     }
 }
