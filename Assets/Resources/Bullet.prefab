@@ -202,3 +202,4 @@ MonoBehaviour:
   _rb: {fileID: 0}
   speed: 10
   lifeTime: 3
+  damage: 5

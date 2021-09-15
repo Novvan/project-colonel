@@ -7,6 +7,7 @@ using Photon.Realtime;
 public class AIController : MonoBehaviourPun
 {
     [SerializeField] private GameObject target;
+    [SerializeField] private GameObject detectionArea;
     private Rigidbody _rb;
     private Character _character;
 
@@ -23,4 +24,12 @@ public class AIController : MonoBehaviourPun
             _character.Move(targerDir.normalized);
         }
     }
+    public void SetTarget(GameObject nextTarget) 
+    {
+        if (target == null)
+        {
+            target = nextTarget;
+        }
+    }
+    
 }
