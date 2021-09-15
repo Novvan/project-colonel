@@ -27,5 +27,9 @@ public class CharacterController : MonoBehaviourPun
             Vector3 mdir = ray.GetPoint(hitdist);
             _character.AimTo(mdir);
         }
+        if (Input.GetKey(KeyCode.Mouse0)) 
+        {
+            _character.Attack();
+        }
     }
 }

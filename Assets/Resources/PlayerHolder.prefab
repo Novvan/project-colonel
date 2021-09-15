@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3520255055895632793}
   - component: {fileID: 7568171864746898443}
   - component: {fileID: 87721412519873601}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 979346954914467159}
   - component: {fileID: 2423208860715378043}
   - component: {fileID: 3409997116923762276}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PlayerHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -222,6 +222,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 7
+  bullet: {fileID: 0}
 --- !u!114 &6734186607146864185
 MonoBehaviour:
   m_ObjectHideFlags: 0
