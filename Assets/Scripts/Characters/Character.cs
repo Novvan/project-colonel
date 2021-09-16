@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class Character : MonoBehaviourPun
+public class Character : MonoBehaviourPun, IMove, IAttack, IDamageable
 {
     [SerializeField] private GameObject bullet;
     [SerializeField] private float speed;

@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class CharacterController : MonoBehaviourPun
+public class PlayerController : MonoBehaviourPun
 {
     private Character _character;
 
