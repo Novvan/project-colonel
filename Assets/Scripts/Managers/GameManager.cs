@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
             // Check killed zombies
             float maxKillCount = 0;
-            PhotonView winner = null;
+            Player winner = null;
             foreach (PhotonView player in PhotonNetwork.PhotonViewCollection)
             {
                 if (player.gameObject.GetComponent<Character>() != null)
@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
                     if (character.Killcount >= maxKillCount)
                     {
-                        winner = player;
+                        winner = player.Controller;
                         maxKillCount = character.Killcount;
                     }
                 }
@@ -81,10 +81,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (photonView != null) photonView.RPC("StartGame", RpcTarget.All);
     }
 
-    private void TriggerWin(PhotonView currentWinner)
+    private void TriggerWin(Player currentWinner)
     {
         if (currentWinner != null)
         {
+            print("win");
             photonView.RPC("Win", RpcTarget.All, currentWinner);
         }
     }
