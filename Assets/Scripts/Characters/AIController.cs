@@ -16,27 +16,42 @@ public class AIController : MonoBehaviourPun
     {
         _rb = GetComponent<Rigidbody>();
         _character = GetComponent<Character>();
-        
+
     }
+
     private void Start()
     {
         gm = _character.Gm;
     }
+
     void Update()
     {
-        if (target != null) 
+        if (photonView.IsMine)
         {
-            Vector3 targerDir = target.transform.position - transform.position;
-            _character.Move(targerDir.normalized);
+            if (target != null)
+            {
+                Vector3 targerDir = target.transform.position - transform.position;
+                _character.Move(targerDir.normalized);
+            }
         }
-        //if (gm.KillZombies) Destroy(gameObject);
     }
-    public void SetTarget(GameObject nextTarget) 
+
+    public void SetTarget(GameObject nextTarget)
     {
         if (target == null)
         {
             target = nextTarget;
         }
     }
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+
+            Character character = other.gameObject.GetComponent<Character>();
+            character.photonView.RPC("GetDamage", character.photonView.Owner, 20);
+        }
+    }
+
 }

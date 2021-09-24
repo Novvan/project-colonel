@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         HUD.GetComponent<TextMeshPro>().text = ZombieCount.ToString();
     }
+
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         if (PhotonNetwork.IsMasterClient)
@@ -72,6 +73,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
         }
     }
+
     IEnumerator WaitToStart()
     {
         yield return new WaitForSeconds(_secondsToStart);

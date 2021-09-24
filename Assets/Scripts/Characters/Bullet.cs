@@ -17,20 +17,30 @@ public class Bullet : MonoBehaviourPun
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        if (!photonView.IsMine) Destroy(this);
     }
 
     void Update()
     {
-        if (_currentLifeTime < _lifeTime) _currentLifeTime += Time.deltaTime;
-        else Destroy(gameObject);
-        _rb.velocity = transform.forward * _speed;
+        if (photonView.IsMine)
+        {
+            if (_currentLifeTime < _lifeTime) _currentLifeTime += Time.deltaTime;
+            else Destroy(gameObject);
+            _rb.velocity = transform.forward * _speed;
+        }
     }
+
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.tag.ToLower() == "enemy")
+        if (photonView.IsMine)
         {
-            collision.gameObject.GetComponent<Character>().GetDamage(_damage);
-            Destroy(gameObject);
+            if (collision.gameObject.tag.ToLower() == "enemy")
+            {
+                Character character = collision.gameObject.GetComponent<Character>();
+                character.photonView.RPC("GetDamage", character.photonView.Owner, _damage);
+                PhotonNetwork.Destroy(gameObject);
+            }
         }
+
     }
 }

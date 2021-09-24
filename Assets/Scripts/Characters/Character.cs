@@ -51,6 +51,8 @@ public class Character : MonoBehaviourPun, IMove, IAttack, IDamageable
             _currentAttackTimer = 0;
         }
     }
+
+    [PunRPC]
     public void GetDamage(float damage)
     {
         _currentHealth -= damage;
@@ -71,6 +73,7 @@ public class Character : MonoBehaviourPun, IMove, IAttack, IDamageable
                 _gm.ZombiesAlive--;
                 _gm.ZombieCount++;
             }
+
             _currentHealth = 0;
             KillCharacter();
         }
@@ -80,6 +83,6 @@ public class Character : MonoBehaviourPun, IMove, IAttack, IDamageable
 
     public void KillCharacter()
     {
-        Destroy(gameObject);
+        PhotonNetwork.Destroy(gameObject);
     }
 }
