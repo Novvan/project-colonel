@@ -70,36 +70,25 @@ public class GameManager : MonoBehaviourPunCallbacks
             if (playerCount >= _numberOfPlayers)
             {
                 //start game
-                // StartCoroutine(WaitToStart());
-                photonView.RPC("StartGame", RpcTarget.All);
+                StartCoroutine(WaitToStart());
                 PhotonNetwork.CurrentRoom.IsOpen = false;
                 PhotonNetwork.CurrentRoom.IsVisible = false;
             }
         }
     }
-    // IEnumerator WaitToStart()
-    // {
-    //     yield return new WaitForSeconds(_secondsToStart);
-    //     photonView.RPC("StartGame", RpcTarget.All);
-    // }
+    IEnumerator WaitToStart()
+    {
+        yield return new WaitForSeconds(_secondsToStart);
+        photonView.RPC("StartGame", RpcTarget.All);
+    }
 
     [PunRPC]
-    void StartGame()
+    public void StartGame()
     {
-        float counter = 0;
-        float waitTime = 0;
-        if (counter <= waitTime)
+        foreach (GameObject spawner in _zombieSpawners)
         {
-            counter += Time.deltaTime;
+            spawner.SetActive(true);
         }
-        else
-        {
-            foreach (GameObject spawner in _zombieSpawners)
-            {
-                spawner.SetActive(true);
-            }
-        }
-
     }
 
     public void Win(Player player)
