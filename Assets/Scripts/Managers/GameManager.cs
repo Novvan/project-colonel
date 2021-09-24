@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    public void Win(Player player)
+    public void Win()
     {
         //Win
         WinnerScreen.SetActive(true);
