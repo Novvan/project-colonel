@@ -9,7 +9,7 @@ public class ZombieSpawner : Spawner
     private float _randomTimer;
     private void Start()
     {
-        _randomTimer = Random.Range(0, 10);
+        _randomTimer = 3;
     }
     private void Update()
     {
@@ -20,7 +20,7 @@ public class ZombieSpawner : Spawner
         else
         {
             Spawn();
-            _randomTimer = Random.Range(0, 10);
+            
             _currentSpawnTimer = 0;
         }
 
