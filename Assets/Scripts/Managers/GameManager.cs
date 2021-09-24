@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
             // Stop spawning
             foreach (GameObject spawner in _zombieSpawners) spawner.SetActive(false);
-            killZombies();
+            photonView.RPC("killZombies", RpcTarget.All);
 
             // Check killed zombies
             float maxKillCount = 0;
@@ -70,25 +70,38 @@ public class GameManager : MonoBehaviourPunCallbacks
             if (playerCount >= _numberOfPlayers)
             {
                 //start game
-                StartCoroutine(WaitToStart());
+                // StartCoroutine(WaitToStart());
+                photonView.RPC("StartGame", RpcTarget.All);
                 PhotonNetwork.CurrentRoom.IsOpen = false;
                 PhotonNetwork.CurrentRoom.IsVisible = false;
             }
         }
     }
-    IEnumerator WaitToStart()
-    {
-        yield return new WaitForSeconds(_secondsToStart);
-        photonView.RPC("StartGame", RpcTarget.All);
-    }
+    // IEnumerator WaitToStart()
+    // {
+    //     yield return new WaitForSeconds(_secondsToStart);
+    //     photonView.RPC("StartGame", RpcTarget.All);
+    // }
+
     [PunRPC]
     void StartGame()
     {
-        foreach (GameObject spawner in _zombieSpawners)
+        float counter = 0;
+        float waitTime = 0;
+        if (counter <= waitTime)
         {
-            spawner.SetActive(true);
+            counter += Time.deltaTime;
         }
+        else
+        {
+            foreach (GameObject spawner in _zombieSpawners)
+            {
+                spawner.SetActive(true);
+            }
+        }
+
     }
+
     public void Win(Player player)
     {
         if (player == PhotonNetwork.LocalPlayer)
@@ -105,7 +118,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-
     private void killZombies()
     {
         Character[] characterList = FindObjectsOfType<Character>();
@@ -115,6 +127,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             if (item.gameObject.CompareTag("Enemy")) Destroy(item.gameObject);
         }
     }
+
     private void TriggerWin(PhotonView currentWinner)
     {
         if (currentWinner != null)
