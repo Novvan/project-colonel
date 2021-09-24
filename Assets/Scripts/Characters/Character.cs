@@ -59,13 +59,20 @@ public class Character : MonoBehaviourPun, IMove, IAttack, IDamageable
         {
             if (gameObject.GetComponent<AIController>() != null)
             {
-                Debug.Log("This nigga dead");
                 gm.ZombiesAlive--;
                 gm.ZombieCount++;
                 damageInstigator.GetComponent<Character>().Killcount++;
             }
             _currentHealth = 0;
-            Destroy(gameObject);
+            photonView.RPC("killCharacter", RpcTarget.All);
         }
+    }
+
+
+
+    [PunRPC]
+    private void killCharacter()
+    {
+        Destroy(this.gameObject);
     }
 }
