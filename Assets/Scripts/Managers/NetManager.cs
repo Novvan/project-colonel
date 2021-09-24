@@ -5,12 +5,13 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class NetManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] Button button;
-    [SerializeField] InputField inputFieldRoom;
-    [SerializeField] InputField inputFieldPlayer;
+    [SerializeField] TMP_InputField inputFieldRoom;
+    [SerializeField] TMP_InputField inputFieldPlayer;
 
     void Start()
     {
@@ -18,7 +19,7 @@ public class NetManager : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
     }
 
-    public override void OnConnectedToMaster() 
+    public override void OnConnectedToMaster()
     {
         print("Connected to master");
         PhotonNetwork.JoinLobby();
@@ -30,7 +31,7 @@ public class NetManager : MonoBehaviourPunCallbacks
         button.interactable = true;
     }
 
-    public void Connect() 
+    public void Connect()
     {
         if (string.IsNullOrWhiteSpace(inputFieldRoom.text) || string.IsNullOrEmpty(inputFieldRoom.text)) return;
         if (string.IsNullOrWhiteSpace(inputFieldPlayer.text) || string.IsNullOrEmpty(inputFieldPlayer.text)) return;
