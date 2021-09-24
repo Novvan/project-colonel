@@ -27,21 +27,13 @@ public class ZombieSpawner : Spawner
     }
     public override void Spawn()
     {
-        if (gm != null)
+        if (PhotonNetwork.IsMasterClient)
         {
             if (gm.ZombiesAlive < gm.MaxZombiesAlive)
             {
                 base.Spawn();
                 gm.ZombiesAlive++;
             }
-            else
-            {
-                Debug.Log("Max Zombies");
-            }
-        }
-        else
-        {
-            Debug.Log("Missed GM");
         }
     }
 }
