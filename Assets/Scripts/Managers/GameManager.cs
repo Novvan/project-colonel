@@ -57,7 +57,6 @@ public class GameManager : MonoBehaviourPunCallbacks
                         maxKillCount = character.Killcount;
                     }
                 }
-                else Debug.Log("Character inexistente pa");
             }
             TriggerWin(winner);
         }
@@ -80,6 +79,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         yield return new WaitForSeconds(_secondsToStart);
         photonView.RPC("StartGame", RpcTarget.All);
+    }
+
+    private void TriggerWin(PhotonView currentWinner)
+    {
+        if (currentWinner != null)
+        {
+            photonView.RPC("Win", RpcTarget.All, currentWinner);
+        }
     }
 
     [PunRPC]
@@ -114,14 +121,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         foreach (var item in characterList)
         {
             if (item.gameObject.CompareTag("Enemy")) Destroy(item.gameObject);
-        }
-    }
-
-    private void TriggerWin(PhotonView currentWinner)
-    {
-        if (currentWinner != null)
-        {
-            photonView.RPC("Win", RpcTarget.All, currentWinner);
         }
     }
 }
