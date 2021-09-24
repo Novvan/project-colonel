@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         WinnerScreen.SetActive(true);
         LoserScreen.SetActive(false);
 
+        Time.timeScale = 0;
     }
 
     [PunRPC]
