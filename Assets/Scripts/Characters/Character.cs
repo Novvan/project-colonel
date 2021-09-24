@@ -64,7 +64,7 @@ public class Character : MonoBehaviourPun, IMove, IAttack, IDamageable
                 damageInstigator.GetComponent<Character>().Killcount++;
             }
             _currentHealth = 0;
-            photonView.RPC("KillCharacter", RpcTarget.All);
+            this.gameObject.GetPhotonView().RPC("KillCharacter", RpcTarget.All);
         }
     }
 
