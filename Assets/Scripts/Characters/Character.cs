@@ -72,6 +72,6 @@ public class Character : MonoBehaviourPun, IMove, IAttack, IDamageable
 
     public void KillCharacter()
     {
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 }
