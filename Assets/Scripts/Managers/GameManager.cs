@@ -6,30 +6,51 @@ using Photon.Realtime;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private GameObject zombieSpawner;
+    [SerializeField] private List<GameObject> zombieSpawners;
     [SerializeField] private float secondsToStart = 2;
     [SerializeField] private int numberOfPlayers;
+    [SerializeField] private int maxZombieCount;
 
     private float spawnCooldown = 3;
     private float currentSpawnCooldown = 0;
+    private int zombieCount;
+    private bool killZombies;
+    private bool _hasWinner;
+    public int ZombieCount { get => zombieCount; set => zombieCount = value; }
+    public bool KillZombies { get => killZombies; set => killZombies = value; }
 
-    // Start is called before the first frame update
+    public GameObject winnerScreen;
+    public GameObject loserScreen;
+
     void Start()
     {
-        zombieSpawner.SetActive(false);
+       /*foreach (GameObject spawner in zombieSpawners)
+        {
+            spawner.SetActive(false);
+        }*/
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (currentSpawnCooldown < spawnCooldown)
+        if (zombieCount >= maxZombieCount && !_hasWinner) 
         {
-            currentSpawnCooldown += Time.deltaTime;
-        }
-        else 
-        {
-            zombieSpawner.GetComponent<ZombieSpawner>().Spawn();
-            currentSpawnCooldown = 0;
+            _hasWinner = true;
+            foreach (GameObject spawner in zombieSpawners)
+            {
+                spawner.SetActive(false);
+            }
+            killZombies = true;
+            float maxKillCount = 0;
+            PhotonView currentWinner = null;
+            foreach (PhotonView player in PhotonNetwork.PhotonViews) 
+            {
+                if (player.gameObject.GetComponent<Character>().Killcount >= maxKillCount) 
+                {
+                    currentWinner = player;
+                    maxKillCount = player.gameObject.GetComponent<Character>().Killcount;
+                }
+            }
+            photonView.RPC("Win", RpcTarget.All, currentWinner);
         }
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -54,6 +75,25 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void StartGame()
     {
-        zombieSpawner.SetActive(true);
+        foreach (GameObject spawner in zombieSpawners)
+        {
+            spawner.SetActive(true);
+        }
     }
+    public void Win(Player player)
+    {
+        if (player == PhotonNetwork.LocalPlayer)
+        {
+            //Win
+            winnerScreen.SetActive(true);
+            loserScreen.SetActive(false);
+        }
+        else
+        {
+            //Lose
+            loserScreen.SetActive(true);
+            winnerScreen.SetActive(false);
+        }
+    }
+
 }

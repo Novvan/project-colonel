@@ -10,11 +10,17 @@ public class AIController : MonoBehaviourPun
     [SerializeField] private GameObject detectionArea;
     private Rigidbody _rb;
     private Character _character;
+    private GameManager gm;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         _character = GetComponent<Character>();
+        
+    }
+    private void Start()
+    {
+        gm = _character.Gm;
     }
     void Update()
     {
@@ -23,6 +29,7 @@ public class AIController : MonoBehaviourPun
             Vector3 targerDir = target.transform.position - transform.position;
             _character.Move(targerDir.normalized);
         }
+        //if (gm.KillZombies) Destroy(gameObject);
     }
     public void SetTarget(GameObject nextTarget) 
     {

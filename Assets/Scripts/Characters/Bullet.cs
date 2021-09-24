@@ -11,6 +11,8 @@ public class Bullet : MonoBehaviourPun
     [SerializeField] float lifeTime;
     [SerializeField] float damage;
     private float currentLifeTime;
+    private GameObject owner;
+    public GameObject Owner { get => owner; set => owner = value; }
 
     private void Awake()
     {
@@ -27,7 +29,7 @@ public class Bullet : MonoBehaviourPun
     {
         if (collision.gameObject.tag.ToLower() == "enemy") 
         {
-            collision.gameObject.GetComponent<Character>().GetDamage(damage);
+            collision.gameObject.GetComponent<Character>().GetDamage(damage, owner);
         }
         Destroy(gameObject);
     }

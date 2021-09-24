@@ -13,6 +13,11 @@ public class Character : MonoBehaviourPun, IMove, IAttack, IDamageable
     private float currentHealth;
     private float currentAttackTimer;
     private float attackTimer = 0.2f;
+    private float killcount;
+    
+    private GameManager gm;
+    public GameManager Gm { get => gm; set => gm = value; }
+    public float Killcount { get => killcount; set => killcount = value; }
 
     private void Awake()
     {
@@ -45,11 +50,12 @@ public class Character : MonoBehaviourPun, IMove, IAttack, IDamageable
             currentAttackTimer = 0;
         }
     }
-    public void GetDamage(float damage) 
+    public void GetDamage(float damage, GameObject damageInstigator) 
     {
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
+            if (gameObject.GetComponent<AIController>() != null) damageInstigator.GetComponent<Character>().Killcount++;
             currentHealth = 0;
             Destroy(gameObject);
         }
