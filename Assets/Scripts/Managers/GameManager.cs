@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             if (playerCount >= _numberOfPlayers)
             {
                 //start game
-                StartCoroutine(WaitToStart());
+                StartCoroutine("WaitToStart");
                 PhotonNetwork.CurrentRoom.IsOpen = false;
                 PhotonNetwork.CurrentRoom.IsVisible = false;
             }
