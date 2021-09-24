@@ -3426,7 +3426,7 @@ MonoBehaviour:
   _secondsToStart: 2
   _numberOfPlayers: 2
   _maxZombieCount: 10
-  _maxZombiesAlive: 15
+  _maxZombiesAlive: 1
   WinnerScreen: {fileID: 1241249151}
   LoserScreen: {fileID: 511502599}
 --- !u!114 &111846935
