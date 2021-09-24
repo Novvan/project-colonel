@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public int MaxZombiesAlive { get => _maxZombiesAlive; set => _maxZombiesAlive = value; }
     public int ZombiesAlive { get => _zombiesAlive; set => _zombiesAlive = value; }
 
+    public GameObject HUD;
     public GameObject WinnerScreen;
     public GameObject LoserScreen;
 
@@ -53,6 +55,8 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
             TriggerWin();
         }
+
+        HUD.GetComponent<TextMeshPro>().text = ZombieCount.ToString();
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
