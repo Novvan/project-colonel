@@ -98,6 +98,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
+    [PunRPC]
     public void Win(Player player)
     {
         if (player == PhotonNetwork.LocalPlayer)
@@ -114,6 +115,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
+    [PunRPC]
     public void KillZombies()
     {
         Character[] characterList = FindObjectsOfType<Character>();
