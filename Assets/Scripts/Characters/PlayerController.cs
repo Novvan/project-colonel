@@ -22,12 +22,12 @@ public class PlayerController : MonoBehaviourPun
         Plane playerPlane = new Plane(Vector3.up, transform.position);
         Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
         float hitdist = 0.0f;
-        if (playerPlane.Raycast(ray, out hitdist)) 
+        if (playerPlane.Raycast(ray, out hitdist))
         {
             Vector3 mdir = ray.GetPoint(hitdist);
             _character.AimTo(mdir);
         }
-        if (Input.GetKey(KeyCode.Mouse0)) 
+        if (Input.GetKey(KeyCode.Mouse0))
         {
             _character.Attack();
         }
