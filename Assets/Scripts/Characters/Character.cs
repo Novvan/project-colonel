@@ -54,12 +54,20 @@ public class Character : MonoBehaviourPun, IMove, IAttack, IDamageable
     public void GetDamage(float damage)
     {
         _currentHealth -= damage;
+
         if (_currentHealth <= 0)
         {
             if (gameObject.GetComponent<AIController>() != null)
             {
-                gm.ZombiesAlive--;
-                gm.ZombieCount++;
+                if (gm != null)
+                {
+                    gm.ZombiesAlive--;
+                    gm.ZombieCount++;
+                }
+                else
+                {
+                    Debug.Log("GM en null pa");
+                }
             }
             _currentHealth = 0;
             KillCharacter();
