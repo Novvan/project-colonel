@@ -43,22 +43,15 @@ public class GameManager : MonoBehaviourPunCallbacks
             photonView.RPC("KillZombies", RpcTarget.All);
 
             // Check killed zombies
-            float maxKillCount = 0;
             Player winner = null;
             foreach (PhotonView player in PhotonNetwork.PhotonViewCollection)
             {
                 if (player.gameObject.GetComponent<Character>() != null)
                 {
-                    Character character = player.gameObject.GetComponent<Character>();
-
-                    if (character.Killcount >= maxKillCount)
-                    {
-                        winner = player.Controller;
-                        maxKillCount = character.Killcount;
-                    }
+                    winner = player.Controller;
                 }
             }
-            TriggerWin(winner);
+            TriggerWin();
         }
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -81,13 +74,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (photonView != null) photonView.RPC("StartGame", RpcTarget.All);
     }
 
-    private void TriggerWin(Player currentWinner)
+    private void TriggerWin()
     {
-        if (currentWinner != null)
-        {
-            print("win");
-            photonView.RPC("Win", RpcTarget.All, currentWinner);
-        }
+        photonView.RPC("Win", RpcTarget.All);
     }
 
     [PunRPC]
@@ -102,18 +91,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void Win(Player player)
     {
-        if (player == PhotonNetwork.LocalPlayer)
-        {
-            //Win
-            WinnerScreen.SetActive(true);
-            LoserScreen.SetActive(false);
-        }
-        else
-        {
-            //Lose
-            LoserScreen.SetActive(true);
-            WinnerScreen.SetActive(false);
-        }
+        //Win
+        WinnerScreen.SetActive(true);
+        LoserScreen.SetActive(false);
+
     }
 
     [PunRPC]

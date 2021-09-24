@@ -48,11 +48,10 @@ public class Character : MonoBehaviourPun, IMove, IAttack, IDamageable
         else
         {
             GameObject bullet = PhotonNetwork.Instantiate("Bullet", _bulletPoint.transform.position, _bulletPoint.transform.rotation);
-            bullet.gameObject.GetComponent<Bullet>().Owner = this.gameObject;
             _currentAttackTimer = 0;
         }
     }
-    public void GetDamage(float damage, GameObject damageInstigator)
+    public void GetDamage(float damage)
     {
         _currentHealth -= damage;
         if (_currentHealth <= 0)
@@ -61,7 +60,6 @@ public class Character : MonoBehaviourPun, IMove, IAttack, IDamageable
             {
                 gm.ZombiesAlive--;
                 gm.ZombieCount++;
-                damageInstigator.GetComponent<Character>().Killcount++;
             }
             _currentHealth = 0;
             KillCharacter();

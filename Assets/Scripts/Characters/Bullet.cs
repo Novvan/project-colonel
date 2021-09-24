@@ -29,7 +29,7 @@ public class Bullet : MonoBehaviourPun
     {
         if (collision.gameObject.tag.ToLower() == "enemy")
         {
-            collision.gameObject.GetComponent<Character>().GetDamage(_damage, _owner);
+            collision.gameObject.GetComponent<Character>().GetDamage(_damage);
             Destroy(gameObject);
         }
     }
