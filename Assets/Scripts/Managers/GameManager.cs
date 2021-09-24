@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     IEnumerator WaitToStart()
     {
         yield return new WaitForSeconds(_secondsToStart);
-        photonView.RPC("StartGame", RpcTarget.All);
+        if (photonView != null) photonView.RPC("StartGame", RpcTarget.All);
     }
 
     private void TriggerWin(PhotonView currentWinner)
