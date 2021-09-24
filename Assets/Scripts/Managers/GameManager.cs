@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public int MaxZombiesAlive { get => _maxZombiesAlive; set => _maxZombiesAlive = value; }
     public int ZombiesAlive { get => _zombiesAlive; set => _zombiesAlive = value; }
 
-    public GameObject HUD;
+    public GameObject Hud;
     public GameObject WinnerScreen;
     public GameObject LoserScreen;
 
@@ -55,8 +55,11 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
             TriggerWin();
         }
+        if (Hud != null)
+        {
+            Hud.GetComponent<TextMeshPro>().text = _zombieCount.ToString();
+        }
 
-        HUD.GetComponent<TextMeshPro>().text = ZombieCount.ToString();
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)

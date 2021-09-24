@@ -3424,9 +3424,10 @@ MonoBehaviour:
   - {fileID: 1182972308}
   - {fileID: 557945982}
   _secondsToStart: 4
-  _numberOfPlayers: 2
+  _numberOfPlayers: 1
   _maxZombieCount: 50
   _maxZombiesAlive: 25
+  HUD: {fileID: 1748071076}
   WinnerScreen: {fileID: 1241249151}
   LoserScreen: {fileID: 511502599}
 --- !u!114 &111846935
