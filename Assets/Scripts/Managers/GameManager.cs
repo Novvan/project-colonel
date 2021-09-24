@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
             // Stop spawning
             foreach (GameObject spawner in _zombieSpawners) spawner.SetActive(false);
-            photonView.RPC("killZombies", RpcTarget.All);
+            photonView.RPC("KillZombies", RpcTarget.All);
 
             // Check killed zombies
             float maxKillCount = 0;
@@ -114,7 +114,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    private void killZombies()
+    public void KillZombies()
     {
         Character[] characterList = FindObjectsOfType<Character>();
 
