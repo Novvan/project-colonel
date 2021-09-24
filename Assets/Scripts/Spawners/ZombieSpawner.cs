@@ -5,29 +5,32 @@ using Photon.Pun;
 
 public class ZombieSpawner : Spawner
 {
-    private float currentSpawnTimer;
-    private float randomTimer;
+    private float _currentSpawnTimer;
+    private float _randomTimer;
     private void Start()
     {
-        randomTimer = Random.Range(30, 50);
+        _randomTimer = Random.Range(0, 10);
     }
     private void Update()
     {
-        if (currentSpawnTimer < randomTimer)
+        if (_currentSpawnTimer < _randomTimer)
         {
-            currentSpawnTimer += Time.deltaTime;
+            _currentSpawnTimer += Time.deltaTime;
         }
-        else 
+        else
         {
             Spawn();
-            randomTimer = Random.Range(20, 50);
-            currentSpawnTimer = 0;
+            _randomTimer = Random.Range(0, 10);
+            _currentSpawnTimer = 0;
         }
-        
+
     }
     public override void Spawn()
     {
-        base.Spawn();
-        gm.ZombieCount += 1;
+        if (gm.ZombiesAlive < gm.MaxZombiesAlive)
+        {
+            base.Spawn();
+            gm.ZombiesAlive++;
+        }
     }
 }

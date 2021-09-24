@@ -6,51 +6,60 @@ using Photon.Realtime;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private List<GameObject> zombieSpawners;
-    [SerializeField] private float secondsToStart = 2;
-    [SerializeField] private int numberOfPlayers;
-    [SerializeField] private int maxZombieCount;
+    [SerializeField] private List<GameObject> _zombieSpawners;
+    [SerializeField] private float _secondsToStart = 2;
+    [SerializeField] private int _numberOfPlayers;
+    [SerializeField] private int _maxZombieCount;
+    [SerializeField] private int _maxZombiesAlive;
 
-    private float spawnCooldown = 3;
-    private float currentSpawnCooldown = 0;
-    private int zombieCount;
-    private bool killZombies;
+    private float _spawnCooldown = 3;
+    private float _currentSpawnCooldown = 0;
+    private int _zombieCount;
+    private int _zombiesAlive;
     private bool _hasWinner;
-    public int ZombieCount { get => zombieCount; set => zombieCount = value; }
-    public bool KillZombies { get => killZombies; set => killZombies = value; }
+    public int ZombieCount { get => _zombieCount; set => _zombieCount = value; }
+    public int MaxZombiesAlive { get => _maxZombiesAlive; set => _maxZombiesAlive = value; }
+    public int ZombiesAlive { get => _zombiesAlive; set => _zombiesAlive = value; }
 
-    public GameObject winnerScreen;
-    public GameObject loserScreen;
+    public GameObject WinnerScreen;
+    public GameObject LoserScreen;
 
     void Start()
     {
-       /*foreach (GameObject spawner in zombieSpawners)
+        foreach (GameObject spawner in _zombieSpawners)
         {
             spawner.SetActive(false);
-        }*/
+        }
     }
 
     void Update()
     {
-        if (zombieCount >= maxZombieCount && !_hasWinner) 
+        if (_zombieCount >= _maxZombieCount && !_hasWinner)
         {
             _hasWinner = true;
-            foreach (GameObject spawner in zombieSpawners)
-            {
-                spawner.SetActive(false);
-            }
-            killZombies = true;
+
+            // Stop spawning
+            foreach (GameObject spawner in _zombieSpawners) spawner.SetActive(false);
+            killZombies();
+
+            // Check killed zombies
             float maxKillCount = 0;
-            PhotonView currentWinner = null;
-            foreach (PhotonView player in PhotonNetwork.PhotonViews) 
+            PhotonView winner = null;
+            foreach (PhotonView player in PhotonNetwork.PhotonViewCollection)
             {
-                if (player.gameObject.GetComponent<Character>().Killcount >= maxKillCount) 
+                if (player.gameObject.GetComponent<Character>() != null)
                 {
-                    currentWinner = player;
-                    maxKillCount = player.gameObject.GetComponent<Character>().Killcount;
+                    Character character = player.gameObject.GetComponent<Character>();
+
+                    if (character.Killcount >= maxKillCount)
+                    {
+                        winner = player;
+                        maxKillCount = character.Killcount;
+                    }
                 }
+                else Debug.Log("Character inexistente pa");
             }
-            photonView.RPC("Win", RpcTarget.All, currentWinner);
+            TriggerWin(winner);
         }
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -58,7 +67,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             var playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
-            if (playerCount >= numberOfPlayers)
+            if (playerCount >= _numberOfPlayers)
             {
                 //start game
                 StartCoroutine(WaitToStart());
@@ -69,13 +78,13 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     IEnumerator WaitToStart()
     {
-        yield return new WaitForSeconds(secondsToStart);
+        yield return new WaitForSeconds(_secondsToStart);
         photonView.RPC("StartGame", RpcTarget.All);
     }
     [PunRPC]
     void StartGame()
     {
-        foreach (GameObject spawner in zombieSpawners)
+        foreach (GameObject spawner in _zombieSpawners)
         {
             spawner.SetActive(true);
         }
@@ -85,15 +94,32 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (player == PhotonNetwork.LocalPlayer)
         {
             //Win
-            winnerScreen.SetActive(true);
-            loserScreen.SetActive(false);
+            WinnerScreen.SetActive(true);
+            LoserScreen.SetActive(false);
         }
         else
         {
             //Lose
-            loserScreen.SetActive(true);
-            winnerScreen.SetActive(false);
+            LoserScreen.SetActive(true);
+            WinnerScreen.SetActive(false);
         }
     }
 
+
+    private void killZombies()
+    {
+        Character[] characterList = FindObjectsOfType<Character>();
+
+        foreach (var item in characterList)
+        {
+            if (item.gameObject.CompareTag("Enemy")) Destroy(item.gameObject);
+        }
+    }
+    private void TriggerWin(PhotonView currentWinner)
+    {
+        if (currentWinner != null)
+        {
+            photonView.RPC("Win", RpcTarget.All, currentWinner);
+        }
+    }
 }

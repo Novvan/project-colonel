@@ -6,13 +6,13 @@ using Photon.Realtime;
 
 public class Bullet : MonoBehaviourPun
 {
-    [SerializeField] Rigidbody _rb;
-    [SerializeField] float speed;
-    [SerializeField] float lifeTime;
-    [SerializeField] float damage;
-    private float currentLifeTime;
-    private GameObject owner;
-    public GameObject Owner { get => owner; set => owner = value; }
+    private Rigidbody _rb;
+    [SerializeField] private float _speed;
+    [SerializeField] private float _lifeTime;
+    [SerializeField] private float _damage;
+    private float _currentLifeTime;
+    private GameObject _owner;
+    public GameObject Owner { get => _owner; set => _owner = value; }
 
     private void Awake()
     {
@@ -21,16 +21,16 @@ public class Bullet : MonoBehaviourPun
 
     void Update()
     {
-        if (currentLifeTime < lifeTime) currentLifeTime += Time.deltaTime;
+        if (_currentLifeTime < _lifeTime) _currentLifeTime += Time.deltaTime;
         else Destroy(gameObject);
-        _rb.velocity = transform.forward * speed;
+        _rb.velocity = transform.forward * _speed;
     }
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.tag.ToLower() == "enemy") 
+        if (collision.gameObject.tag.ToLower() == "enemy")
         {
-            collision.gameObject.GetComponent<Character>().GetDamage(damage, owner);
+            collision.gameObject.GetComponent<Character>().GetDamage(_damage, _owner);
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
     }
 }

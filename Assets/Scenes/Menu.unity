@@ -812,9 +812,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3fcd90d020b8974c87c8cbff150a0e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 320878088}
-  inputFieldRoom: {fileID: 951843445}
-  inputFieldPlayer: {fileID: 902867754}
+  _button: {fileID: 320878088}
+  _inputFieldRoom: {fileID: 951843445}
+  _inputFieldPlayer: {fileID: 902867754}
 --- !u!4 &496418436
 Transform:
   m_ObjectHideFlags: 0

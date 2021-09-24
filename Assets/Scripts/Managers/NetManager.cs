@@ -9,13 +9,13 @@ using TMPro;
 
 public class NetManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] Button button;
-    [SerializeField] TMP_InputField inputFieldRoom;
-    [SerializeField] TMP_InputField inputFieldPlayer;
+    [SerializeField] private Button _button;
+    [SerializeField] private TMP_InputField _inputFieldRoom;
+    [SerializeField] private TMP_InputField _inputFieldPlayer;
 
     void Start()
     {
-        button.interactable = false;
+        _button.interactable = false;
         PhotonNetwork.ConnectUsingSettings();
     }
 
@@ -28,22 +28,22 @@ public class NetManager : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         print("Connected to Lobby");
-        button.interactable = true;
+        _button.interactable = true;
     }
 
     public void Connect()
     {
-        if (string.IsNullOrWhiteSpace(inputFieldRoom.text) || string.IsNullOrEmpty(inputFieldRoom.text)) return;
-        if (string.IsNullOrWhiteSpace(inputFieldPlayer.text) || string.IsNullOrEmpty(inputFieldPlayer.text)) return;
+        if (string.IsNullOrWhiteSpace(_inputFieldRoom.text) || string.IsNullOrEmpty(_inputFieldRoom.text)) return;
+        if (string.IsNullOrWhiteSpace(_inputFieldPlayer.text) || string.IsNullOrEmpty(_inputFieldPlayer.text)) return;
 
-        PhotonNetwork.NickName = inputFieldPlayer.text;
+        PhotonNetwork.NickName = _inputFieldPlayer.text;
         RoomOptions option = new RoomOptions();
         option.IsOpen = true;
         option.IsVisible = true;
         option.MaxPlayers = 4;
 
-        PhotonNetwork.JoinOrCreateRoom(inputFieldRoom.text, option, TypedLobby.Default);
-        button.interactable = false;
+        PhotonNetwork.JoinOrCreateRoom(_inputFieldRoom.text, option, TypedLobby.Default);
+        _button.interactable = false;
     }
     public override void OnCreatedRoom()
     {
@@ -52,7 +52,7 @@ public class NetManager : MonoBehaviourPunCallbacks
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        button.interactable = true;
+        _button.interactable = true;
     }
 
     public override void OnJoinedRoom()
@@ -63,7 +63,7 @@ public class NetManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        button.interactable = true;
+        _button.interactable = true;
     }
 
 }

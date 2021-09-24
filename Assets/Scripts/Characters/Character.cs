@@ -6,18 +6,19 @@ using Photon.Realtime;
 
 public class Character : MonoBehaviourPun, IMove, IAttack, IDamageable
 {
-    [SerializeField] private GameObject bullet;
-    [SerializeField] private float speed;
-    [SerializeField] private float maxHealth;
+    [SerializeField] private GameObject _bullet;
+    [SerializeField] private GameObject _bulletPoint;
+    [SerializeField] private float _speed;
+    [SerializeField] private float _maxHealth;
     private Rigidbody _rb;
-    private float currentHealth;
-    private float currentAttackTimer;
-    private float attackTimer = 0.2f;
-    private float killcount;
-    
+    private float _currentHealth;
+    private float _currentAttackTimer;
+    private float _attackTimer = 0.2f;
+    private float _killcount;
+
     private GameManager gm;
     public GameManager Gm { get => gm; set => gm = value; }
-    public float Killcount { get => killcount; set => killcount = value; }
+    public float Killcount { get => _killcount; set => _killcount = value; }
 
     private void Awake()
     {
@@ -25,38 +26,45 @@ public class Character : MonoBehaviourPun, IMove, IAttack, IDamageable
     }
     private void Start()
     {
-        currentHealth = maxHealth;
+        _currentHealth = _maxHealth;
     }
-    public void Move(Vector3 dir) 
+    public void Move(Vector3 dir)
     {
         dir.y = 0;
-        dir *= speed;
+        dir *= _speed;
         dir.y = _rb.velocity.y;
         _rb.velocity = dir;
     }
-    public void AimTo(Vector3 mdir) 
+    public void AimTo(Vector3 mdir)
     {
         transform.forward = mdir - transform.position;
     }
-    public void Attack() 
+    public void Attack()
     {
-        if (currentAttackTimer < attackTimer) 
+        if (_currentAttackTimer < _attackTimer)
         {
-            currentAttackTimer += Time.deltaTime; 
+            _currentAttackTimer += Time.deltaTime;
         }
         else
         {
-            PhotonNetwork.Instantiate("Bullet", transform.position, transform.rotation);
-            currentAttackTimer = 0;
+            GameObject bullet = PhotonNetwork.Instantiate("Bullet", _bulletPoint.transform.position, _bulletPoint.transform.rotation);
+            bullet.gameObject.GetComponent<Bullet>().Owner = this.gameObject;
+            _currentAttackTimer = 0;
         }
     }
-    public void GetDamage(float damage, GameObject damageInstigator) 
+    public void GetDamage(float damage, GameObject damageInstigator)
     {
-        currentHealth -= damage;
-        if (currentHealth <= 0)
+        _currentHealth -= damage;
+        if (_currentHealth <= 0)
         {
-            if (gameObject.GetComponent<AIController>() != null) damageInstigator.GetComponent<Character>().Killcount++;
-            currentHealth = 0;
+            if (gameObject.GetComponent<AIController>() != null)
+            {
+                Debug.Log("This nigga dead");
+                gm.ZombiesAlive--;
+                gm.ZombieCount++;
+                damageInstigator.GetComponent<Character>().Killcount++;
+            }
+            _currentHealth = 0;
             Destroy(gameObject);
         }
     }

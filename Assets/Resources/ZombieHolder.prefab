@@ -130,9 +130,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22c7b78d1ab02dc498d6c580ba63a432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 0}
-  speed: 4
-  maxHealth: 15
+  _bullet: {fileID: 7522383798444069244, guid: 66691fe5ab878e44b879a2c1ce958a2b, type: 3}
+  _bulletPoint: {fileID: 0}
+  _speed: 2.5
+  _maxHealth: 25
 --- !u!114 &7535453370670514149
 MonoBehaviour:
   m_ObjectHideFlags: 0
