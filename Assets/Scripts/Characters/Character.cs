@@ -16,8 +16,8 @@ public class Character : MonoBehaviourPun, IMove, IAttack, IDamageable
     private float _attackTimer = 0.2f;
     private float _killcount;
 
-    private GameManager gm;
-    public GameManager Gm { get => gm; set => gm = value; }
+    private GameManager _gm;
+    public GameManager Gm { get => _gm; set => _gm = value; }
     public float Killcount { get => _killcount; set => _killcount = value; }
 
     private void Awake()
@@ -59,15 +59,17 @@ public class Character : MonoBehaviourPun, IMove, IAttack, IDamageable
         {
             if (gameObject.GetComponent<AIController>() != null)
             {
-                if (gm != null)
+                if (_gm != null)
                 {
-                    gm.ZombiesAlive--;
-                    gm.ZombieCount++;
+                    Debug.Log("GM no es null pa");
                 }
                 else
                 {
                     Debug.Log("GM en null pa");
+                    _gm = FindObjectOfType<GameManager>();
                 }
+                _gm.ZombiesAlive--;
+                _gm.ZombieCount++;
             }
             _currentHealth = 0;
             KillCharacter();
